@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Matching Game</title>
+    <!-- import Bootstrap and CSS stylesheet -->
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel= "stylesheet">
+  </head>
+
+  <body>
+    <!-- Bootstrap container -->
+    <div class="container">
+      <div class="jumbotron">
+        <h1 id="title" class="display-3">JavaScript Matching Game</h1>
+        <p class="lead">Match 8 pairs of JavaScript framework images</p>
+        </p>
+      </div>
+      <br>
+
+      <!-- create placeholders for game info: star rating, no of moves, timer, game message, restart button -->
+      <div class="row text-center">
+        <div class="col-xs-2">
+          <div id="star" class="btn-space btn-warning"></div>
+        </div>
+        <div class="col-xs-2">
+          <div id="move" class="btn-space btn-info"></div>
+        </div>
+        <div class="col-xs-2">
+          <div id="gametime" class="btn-space btn-success">00:00:00</div>
+        </div>
+        <div class="col-xs-3">
+          <div id="message" class="btn-space btn-danger">Press Play to Start</div>
+        </div>
+        <div class="col-xs-3">
+          <div id="gamecontrol" class="btn-space btn-primary"></div>
+        </div>
+      </div>
+
+      <!-- create placeholder for game board -->
+      <div class="row text-center">
+        <div id="placeholder" class="col-xs-12">
+            <div id="gameboard">Board Placeholder</div>
+        </div>
+      </div>
+    </div>
+
+  <!-- load JavaScripts after DOM is created -->
+  <script src="scripts.js"></script>
+  </body>
+</html>

@@ -1,0 +1,55 @@
+/* scale down html body to 60% in order to show full game board */
+body {
+  -moz-transform: scale(0.8, 0.8); /* Moz-browsers */
+  zoom: 0.8; /* Other non-webkit browsers */
+  zoom: 60%; /* Webkit browsers */
+}
+
+/* import tiles background image for Bootstrap jumbotron title section */
+.jumbotron {
+  margin-bottom: 0px;
+  background-image: url(http://www.tile-stones.com/assets/images/Wood-Plank-Colonial-White-WideView.jpg);
+  background-color: transparent;
+  background-position: 0% 25%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  color: white;
+}
+
+/* add colors gradient effect from lightblue to whitesmoke on the game board */
+#placeholder {
+  margin-top: 50px;
+  box-shadow: 0 0 30px black;
+  padding:0 15px 0 15px;
+  border-radius: 25px;
+  background: lightblue; /* For browsers that do not support gradients */
+  background: -webkit-linear-gradient(lightblue, whitesmoke); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(lightblue, whitesmoke); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(lightblue, whitesmoke); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(lightblue, whitesmoke); /* Standard syntax */
+}
+
+/* styling for tile images */
+.gametile {
+  height: 200px;
+  border-color: #000000;
+  border-style: solid;
+  border-width: 2px;
+  padding: 30px 0 30px 0;
+  margin: 20px 20px 20px 20px;
+  border-radius: 25px;
+}
+
+.flipimage {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* styling for game info section */
+.btn-space {
+  text-align: center;
+  font-size: 20px;
+  height: 25px;
+  border-radius: 25px;
+}
