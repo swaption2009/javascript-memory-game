@@ -31,7 +31,7 @@ function startGame() {
   seconds = 0, mseconds = 0, minutes = 0, hours = 0, moves = 0, score = 0;
 
   // shuffle game cards
-  shuffleArray(solutionArray);
+  shuffleCard(solutionArray);
 
   // clear HTML DOM and display initial game message & restart button
   gameBoard.innerHTML = "";
@@ -90,13 +90,22 @@ function hideCard() {
 }
 
 // reshuffle cards at the beginning of the game
-function shuffleArray(d) {
-  for (var c = d.length - 1; c > 0; c--) {        // c is array value at current index
-    var b = Math.floor(Math.random() * (c + 1));  // b is the randomized number with array length
-    var a = d[c];                                 // a is temporal placeholder
-    d[c] = d[b];                                  // swap array value at current index with randomized number
-    d[b] = a; }                                   // swap array value at randomized index with temporal placeholder
-  return d;                                       // return shuffled array after looping through the array
+function shuffleCard(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+  // Pick a remaining element...
+  randomIndex = Math.floor(Math.random() * currentIndex);
+  currentIndex -= 1;
+
+  // And swap it with the current element.
+  temporaryValue = array[currentIndex];
+  array[currentIndex] = array[randomIndex];
+  array[randomIndex] = temporaryValue;
+  }
+  return array;
 }
 
 // check if game is completed. If yes, popup alert window with completed game stats
