@@ -7,9 +7,9 @@ var buttonMessage = document.getElementById("gamecontrol");
 var gameTime = document.getElementById("gametime");
 
 // initialize game variables
-var timer = "", seconds = 0, mseconds = 0, minutes = 0, hours = 0, t = 0;
+var timer = "", seconds = 0, minutes = 0, t = 0;
 var mess = "";
-var moves = 0, score = 0;
+var moves = 0, resolvedCards = 0;
 
 // initialize game logic
 var cardImages = ['angular.svg', 'backbone.svg', 'ember.svg', 'javascript.svg', 'meteor.svg', 'node.svg', 'react.svg', 'vue.svg'];
@@ -28,7 +28,8 @@ function startGame() {
   timerX();
 
   // reset game variables
-  seconds = 0, mseconds = 0, minutes = 0, hours = 0, moves = 0, score = 0;
+  var seconds = 0, minutes = 0;
+  var moves = 0, resolvedCards = 0;
 
   // shuffle game cards
   shuffleCard(problemSet);
@@ -42,36 +43,34 @@ function startGame() {
   for (var i = 0; i <= ((problemSet.length) - 1); i++) {
     gameBoard.innerHTML += '<div class="col-md-3 col-xs-4">' +
                             '<div class="col-xs-12 gametile">' +
-                            '<img id="card' + i + '" src="img/clickme.png" onclick="pickCard(\'' + problemSet[i] + '\',\'' + i + '\', this);return false;" class="flipimage">' +
+                            '<img id="card' + i + '" src="img/clickme.png" onclick="pickCard(\'' + i + '\', this);return false;" class="flipimage">' +
                             '</div>';
   }
 }
 
 // game logic
 
-// pickCard function take 3 parameters from the selected card, ie.
-// a: name in the cards array, b: card index, c: img html object
-function pickCard(a, b, c) {
+// pickCard function take 2 parameters, ie card index and img html object
+function pickCard(cardIndex, cardObject) {
   // when first card is opened, show card image
-  if (flippedCard < 2 && lastPick != b) {
-    flippedArray[flippedCard] = problemSet[b];
-    flippedArray[(flippedCard + 2)] = c.id;
+  if (flippedCard < 2 && lastPick != cardIndex) {
+    flippedArray[flippedCard] = problemSet[cardIndex];
+    flippedArray[(flippedCard + 2)] = cardObject.id;
     flippedCard++;
-    // c.src = "img/" + problemSet[b];
-    c.src = "img/" + a;
+    cardObject.src = "img/" + problemSet[cardIndex];
 
     // when second card is opened
     if (flippedCard == 2) {
-      moves++;
+      moves++;  // increment number of moves
 
       // when 2 opened cards match
       if (flippedArray[0] == flippedArray[1]) {
         messageText("MATCH FOUND");
         pickAgain();
-        score++;
+        resolvedCards++;
 
         // check if all cards have been solved
-        if (cardImages.length <= score) {
+        if (cardImages.length <= resolvedCards) {
           gameOver();
           }
 
@@ -81,7 +80,7 @@ function pickCard(a, b, c) {
         messageText("NOT FOUND");
       }
     }
-    lastPick = b;
+    lastPick = cardIndex;
   }
 }
 
@@ -121,10 +120,9 @@ function shuffleCard(array) {
 // check if game is completed. If yes, stop time and pop-up game stats window
 function gameOver() {
   clearTimeout(t);
-  alert("Game Over\n" +
-        "Thanks for playing\n" +
-        "You finished in " + gameTime.textContent + "\n" +
-        "in " + moves + " moves."
+  alert("Congratulations! Thanks for playing.\n" +
+        "You finished in " + moves + " moves" + "\n" +
+        "within " + minutes + " minutes " + seconds + " seconds."
   );
 }
 
@@ -161,22 +159,16 @@ function messageText(message){
   countMove.innerHTML = "moves: " + moves;
 }
 
-// increment and display game time
+// increment and display game time in mm:ss format
 function addTime() {
   seconds++;
-
   if(seconds >= 60) {
     seconds=0;
     minutes++;
-    if(minutes >= 60) {
-      minutes =0;
-      hours++;
-    }
   }
 
-  gameTime.textContent = (hours ? (hours > 9 ? hours : "0" + hours) : "00") + ":" +
-                          (minutes ? ( minutes > 9 ? minutes : "0" + minutes) : "00") + ":" +
-                          (seconds > 9 ? seconds : "0" + seconds);
+  gameTime.textContent = (minutes ? ( minutes > 9 ? minutes : "0" + minutes) : "00") + ":" +
+                         (seconds > 9 ? seconds : "0" + seconds);
   timerX();
 }
 
