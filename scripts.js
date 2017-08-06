@@ -3,22 +3,22 @@ var gameBoard = document.getElementById("placeholder");
 var messageTop = document.getElementById("message");
 var starRating = document.getElementById("star");
 var countMove = document.getElementById("move");
-var buttonMessage = document.getElementById("gamecontrol");
-var gameTime = document.getElementById("gametime");
+var resetButton = document.getElementById("reset");
+var gameTime = document.getElementById("time");
 
 // initialize game variables
-var timer = "", seconds = 0, minutes = 0, t = 0;
+var timer = 0, seconds = 0, minutes = 0, t = 0;
 var mess = "";
 var moves = 0, resolvedCards = 0;
 
 // initialize game logic
 var cardImages = ['angular.svg', 'backbone.svg', 'ember.svg', 'javascript.svg', 'meteor.svg', 'node.svg', 'react.svg', 'vue.svg'];
 var problemSet = cardImages.concat(cardImages);      // create game problem array
-var flippedArray = [];                               // create array for comparing 2 open cards
-var flippedCard = 0, lastPick = -1;                  // first card index and second card index in flippedArray
+var flippedArray = [];                               // create an array for comparing 2 opened cards
+var flippedCard = 0, lastPick = -1;
 
 // start a game
-buttonMessage.addEventListener("click", startGame);
+resetButton.addEventListener("click", startGame);
 startGame();
 
 function startGame() {
@@ -28,15 +28,15 @@ function startGame() {
   timerX();
 
   // reset game variables
-  var seconds = 0, minutes = 0;
-  var moves = 0, resolvedCards = 0;
+  seconds = 0, minutes = 0;
+  moves = 0, resolvedCards = 0;
 
   // shuffle game cards
   shuffleCard(problemSet);
 
   // clear HTML DOM and display initial game message & restart button
   gameBoard.innerHTML = "";
-  buttonMessage.innerHTML = "Restart Game";
+  resetButton.innerHTML = "Restart Game";
   messageText("Click a card to start");
 
   // place 16 cards into game board placeholder
@@ -47,8 +47,6 @@ function startGame() {
                             '</div>';
   }
 }
-
-// game logic
 
 // pickCard function take 2 parameters, ie card index and img html object
 function pickCard(cardIndex, cardObject) {
@@ -101,19 +99,16 @@ function hideCard() {
 // reshuffle cards at the beginning of the game
 function shuffleCard(array) {
   var currentIndex = array.length, temporaryValue, randomIndex;
-
   // While there remain elements to shuffle...
   while (0 !== currentIndex) {
-
-  // Pick a remaining element...
-  randomIndex = Math.floor(Math.random() * currentIndex);
-  currentIndex -= 1;
-
-  // And swap it with the current element.
-  temporaryValue = array[currentIndex];
-  array[currentIndex] = array[randomIndex];
-  array[randomIndex] = temporaryValue;
-  }
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+    }
   return array;
 }
 
