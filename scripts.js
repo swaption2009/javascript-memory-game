@@ -13,9 +13,9 @@ var moves = 0, score = 0;
 
 // initialize game logic
 var cardImages = ['angular.svg', 'backbone.svg', 'ember.svg', 'javascript.svg', 'meteor.svg', 'node.svg', 'react.svg', 'vue.svg'];
-var solutionArray = cardImages.concat(cardImages);      // create game problem array
-var flipArray = [];                                     // create array for comparing 2 open cards
-var flippedCard = 0, lastPick = -1;                     // first card index and second card index in flipArray
+var problemSet = cardImages.concat(cardImages);      // create game problem array
+var flippedArray = [];                               // create array for comparing 2 open cards
+var flippedCard = 0, lastPick = -1;                  // first card index and second card index in flippedArray
 
 // start a game
 buttonMessage.addEventListener("click", startGame);
@@ -31,7 +31,7 @@ function startGame() {
   seconds = 0, mseconds = 0, minutes = 0, hours = 0, moves = 0, score = 0;
 
   // shuffle game cards
-  shuffleCard(solutionArray);
+  shuffleCard(problemSet);
 
   // clear HTML DOM and display initial game message & restart button
   gameBoard.innerHTML = "";
@@ -39,53 +39,63 @@ function startGame() {
   messageText("Click a card to start");
 
   // place 16 cards into game board placeholder
-  for (var i = 0; i <= ((solutionArray.length) - 1); i++) {
+  for (var i = 0; i <= ((problemSet.length) - 1); i++) {
     gameBoard.innerHTML += '<div class="col-md-3 col-xs-4">' +
                             '<div class="col-xs-12 gametile">' +
-                            '<img id="card' + i + '" src="img/clickme.png" onclick="pickCard(\'' + solutionArray[i] + '\',\'' + i + '\', this);return false;" class="flipimage">' +
+                            '<img id="card' + i + '" src="img/clickme.png" onclick="pickCard(\'' + problemSet[i] + '\',\'' + i + '\', this);return false;" class="flipimage">' +
                             '</div>';
   }
 }
 
-// implement game logic
-function pickCard(a, b, c) { // take 3 parameters from the selected card, ie. a: name in the cards array, b: index in the cards array, c: img html object
-  if (flippedCard < 2 && lastPick != b) {       // set only 2 cards can be flipped at the same time and 2nd pick can't be the same as 1st pick
-    flipArray[flippedCard] = solutionArray[b];  // store the value of 2 flipped cards into an array
-    flipArray[(flippedCard + 2)] = c.id;
-    flippedCard++;                              // check how many cards are opened at the same time (1 or 2)
-    c.src = "img/" + solutionArray[b];          // show picked card
+// game logic
 
+// pickCard function take 3 parameters from the selected card, ie.
+// a: name in the cards array, b: card index, c: img html object
+function pickCard(a, b, c) {
+  // when first card is opened, show card image
+  if (flippedCard < 2 && lastPick != b) {
+    flippedArray[flippedCard] = problemSet[b];
+    flippedArray[(flippedCard + 2)] = c.id;
+    flippedCard++;
+    // c.src = "img/" + problemSet[b];
+    c.src = "img/" + a;
+
+    // when second card is opened
     if (flippedCard == 2) {
-      moves++;                                  // increment number of moves everytime a pair of cards is opened
-      if (flipArray[0] == flipArray[1]) {       // check if the value of 1st pick and 2nd pick are the same
+      moves++;
+
+      // when 2 opened cards match
+      if (flippedArray[0] == flippedArray[1]) {
         messageText("MATCH FOUND");
         pickAgain();
         score++;
 
+        // check if all cards have been solved
         if (cardImages.length <= score) {
-          gameDone();
+          gameOver();
           }
-        } else {
-          timer = setInterval(hideCard, 1000);   // if the pair doesn't match, close both cards within 1 second
-          messageText("NOT FOUND");
-          }
-        }
 
+      // when 2 opened card don't match
+      } else {
+        timer = setInterval(hideCard, 1000);
+        messageText("NOT FOUND");
+      }
+    }
     lastPick = b;
   }
 }
 
-// reset flipArray after a pair of cards matches
+// reset flippedArray after a pair of cards matches
 function pickAgain() {
   flippedCard = 0;
-  flipArray = [];
+  flippedArray = [];
   lastPick = -1;
   clearInterval(timer);
 }
 
 // close card & show the back image of card when the pair doesn't match
 function hideCard() {
-  document.getElementById(flipArray[2]).src = document.getElementById(flipArray[3]).src = "img/clickme.png";
+  document.getElementById(flippedArray[2]).src = document.getElementById(flippedArray[3]).src = "img/clickme.png";
   pickAgain();
 }
 
@@ -108,8 +118,8 @@ function shuffleCard(array) {
   return array;
 }
 
-// check if game is completed. If yes, popup alert window with completed game stats
-function gameDone() {
+// check if game is completed. If yes, stop time and pop-up game stats window
+function gameOver() {
   clearTimeout(t);
   alert("Game Over\n" +
         "Thanks for playing\n" +
